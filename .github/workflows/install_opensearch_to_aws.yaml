@@ -93,9 +93,17 @@ jobs:
           HELM_ARGS="$HELM_ARGS --set opensearch.master.persistence.storageClass=gp2"
           
           # Reduce memory requirements for smaller clusters
-          HELM_ARGS="$HELM_ARGS --set opensearch.master.resources.requests.memory=1Gi"
-          HELM_ARGS="$HELM_ARGS --set opensearch.master.resources.limits.memory=2Gi"
-          HELM_ARGS="$HELM_ARGS --set 'opensearch.master.javaOpts=-Xms512m -Xmx512m'"
+          cat > /tmp/resource-values.yaml << 'EOF'
+          opensearch:
+            master:
+              resources:
+                requests:
+                  memory: 1Gi
+                limits:
+                  memory: 2Gi
+              javaOpts: "-Xms512m -Xmx512m"
+          EOF
+          HELM_ARGS="$HELM_ARGS -f /tmp/resource-values.yaml"
           
           echo "Helm additional args: $HELM_ARGS"
           
