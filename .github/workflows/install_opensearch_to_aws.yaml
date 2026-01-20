@@ -92,16 +92,22 @@ jobs:
           # AWS EKS uses gp2/gp3 storage class instead of "standard"
           HELM_ARGS="$HELM_ARGS --set opensearch.master.persistence.storageClass=gp2"
           
-          # Reduce memory requirements for smaller clusters
+          # Reduce memory requirements for smaller clusters + increase liveness delay
           cat > /tmp/resource-values.yaml << 'EOF'
           opensearch:
             master:
               resources:
                 requests:
-                  memory: 1Gi
+                  memory: 1.5Gi
                 limits:
                   memory: 2Gi
-              javaOpts: "-Xms512m -Xmx512m"
+              javaOpts: "-Xms768m -Xmx768m"
+              livenessProbe:
+                tcpSocket:
+                  port: transport
+                initialDelaySeconds: 300
+                periodSeconds: 20
+                failureThreshold: 10
           EOF
           HELM_ARGS="$HELM_ARGS -f /tmp/resource-values.yaml"
           
