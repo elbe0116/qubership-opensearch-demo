@@ -89,6 +89,9 @@ jobs:
           EOF
           HELM_ARGS="$HELM_ARGS -f /tmp/monitored-images-values.yaml"
           
+          # AWS EKS uses gp2/gp3 storage class instead of "standard"
+          HELM_ARGS="$HELM_ARGS --set opensearch.master.persistence.storageClass=gp2"
+          
           echo "Helm additional args: $HELM_ARGS"
           
           # Debug: show key values from values.yaml
