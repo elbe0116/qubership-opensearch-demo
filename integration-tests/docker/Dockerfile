@@ -1,4 +1,4 @@
-FROM ghcr.io/elbe0116/qubership-docker-integration-tests:PSUPATPOS-63
+FROM ghcr.io/elbe0116/qubership-docker-integration-tests:PSUPATPOS-63 
 
 # Switch to root for installation
 USER root
