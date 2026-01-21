@@ -59,6 +59,9 @@ jobs:
           # Build helm arguments dynamically (only add non-empty values)
           HELM_ARGS=""
           
+          # Enable integration tests
+          HELM_ARGS="$HELM_ARGS --set integrationTests.enabled=true"
+          
           # Secrets - S3 credentials for test results upload
           [ -n "${{ secrets.S3_AWS_ACCESS_KEY_ID }}" ] && HELM_ARGS="$HELM_ARGS --set integrationTests.atpStorage.username=${{ secrets.S3_AWS_ACCESS_KEY_ID }}"
           [ -n "${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}" ] && HELM_ARGS="$HELM_ARGS --set integrationTests.atpStorage.password=${{ secrets.S3_AWS_SECRET_ACCESS_KEY }}"
