@@ -93,8 +93,11 @@ jobs:
           HELM_ARGS="$HELM_ARGS --set opensearch.master.persistence.storageClass=gp2"
           
           # Reduce resource requirements for smaller clusters + increase liveness delay
+          # Enable fixmount initContainer to fix permissions on EBS volumes
           cat > /tmp/resource-values.yaml << 'EOF'
           opensearch:
+            fixmount:
+              enabled: true
             master:
               resources:
                 requests:
