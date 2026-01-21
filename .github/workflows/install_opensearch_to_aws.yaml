@@ -98,8 +98,11 @@ jobs:
           # Reduce resource requirements for smaller clusters + increase liveness delay
           # Enable fixmount initContainer to fix permissions on EBS volumes
           # Disable integrationTests.affinity to avoid YAML parse error (template uses toJson)
+          # Use busybox from AWS ECR Public to avoid Docker Hub rate limits
           cat > /tmp/resource-values.yaml << 'EOF'
           opensearch:
+            initContainer:
+              dockerImage: public.ecr.aws/docker/library/busybox:1.36
             fixmount:
               enabled: true
             master:
