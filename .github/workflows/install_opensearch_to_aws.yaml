@@ -97,6 +97,7 @@ jobs:
           
           # Reduce resource requirements for smaller clusters + increase liveness delay
           # Enable fixmount initContainer to fix permissions on EBS volumes
+          # Disable integrationTests.affinity to avoid YAML parse error (template uses toJson)
           cat > /tmp/resource-values.yaml << 'EOF'
           opensearch:
             fixmount:
@@ -117,6 +118,8 @@ jobs:
                 periodSeconds: 20
                 failureThreshold: 10
               affinity: {}
+          integrationTests:
+            affinity: null
           EOF
           HELM_ARGS="$HELM_ARGS -f /tmp/resource-values.yaml"
           
