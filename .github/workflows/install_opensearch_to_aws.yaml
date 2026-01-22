@@ -118,6 +118,7 @@ jobs:
               enabled: true
               s3:
                 enabled: true
+                url: "https://s3.us-east-1.amazonaws.com"
                 bucket: "qstp-opensearch"
                 region: "us-east-1"
             master:
