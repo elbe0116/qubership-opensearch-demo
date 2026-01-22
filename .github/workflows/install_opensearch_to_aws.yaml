@@ -7,6 +7,10 @@ on:
         description: "Environment Name"
         required: false
         default: "dev"
+      test_tags:
+        description: "Test tags to run (e.g. smoke, regression, or empty for all)"
+        required: false
+        default: ""
 
 jobs:
   Install-OpenSearch:
@@ -59,8 +63,9 @@ jobs:
           # Build helm arguments dynamically (only add non-empty values)
           HELM_ARGS=""
           
-          # Enable integration tests
+          # Enable integration tests and set test tags (empty = all tests)
           HELM_ARGS="$HELM_ARGS --set integrationTests.enabled=true"
+          HELM_ARGS="$HELM_ARGS --set integrationTests.tags=${{ github.event.inputs.test_tags }}"
           
           # Secrets - S3 credentials for test results upload
           [ -n "${{ secrets.S3_AWS_ACCESS_KEY_ID }}" ] && HELM_ARGS="$HELM_ARGS --set integrationTests.atpStorage.username=${{ secrets.S3_AWS_ACCESS_KEY_ID }}"
