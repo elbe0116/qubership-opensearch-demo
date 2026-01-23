@@ -105,7 +105,7 @@ jobs:
           # Disable integrationTests.affinity to avoid YAML parse error (template uses toJson)
           # Use busybox from AWS ECR Public to avoid Docker Hub rate limits
           # Disable TLS to avoid SSL certificate verification issues
-          # Enable dbaasAdapter, curator, and snapshots for full test coverage
+          # Enable curator for backup tests, snapshots for S3 backup storage
           cat > /tmp/resource-values.yaml << 'EOF'
           opensearch:
             tls:
@@ -137,9 +137,8 @@ jobs:
                 periodSeconds: 20
                 failureThreshold: 10
               affinity: {}
-          dbaasAdapter:
-            enabled: true
           curator:
+            # Enable curator for backup tests (dbaasAdapter not needed)
             enabled: true
           integrationTests:
             affinity: null
